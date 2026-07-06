@@ -1,0 +1,27 @@
+configuration:
+  jwt_enabled:
+    name: JWT aktiviert
+    description: Aktiviert JWT-Pruefung fuer Document-Server-Integrationen.
+  jwt_secret:
+    name: JWT-Secret
+    description: Gemeinsames Secret fuer Integrationen. Leer lassen, damit Euro-Office eins erzeugt und speichert.
+  jwt_header:
+    name: JWT-Header
+    description: HTTP-Header, der das JWT-Token transportiert.
+  example_enabled:
+    name: Beispiel-App
+    description: Aktiviert die eingebaute Beispiel-App. Nicht in nicht vertrauenswuerdigen Netzen freigeben.
+  wopi_enabled:
+    name: WOPI aktiviert
+    description: Aktiviert WOPI-Protokollunterstuetzung.
+  allow_private_ip_address:
+    name: Private IP-Adressen erlauben
+    description: Erlaubt das Abrufen von Dokumenten ueber private Netzwerkadressen.
+  generate_fonts:
+    name: Fonts erzeugen
+    description: Regeneriert den Font-Cache beim Start.
+  nginx_worker_processes:
+    name: Nginx-Worker-Prozesse
+    description: Anzahl der nginx-Worker-Prozesse im Container.
+network:
+  80/TCP: Euro-Office Document Server Weboberflaeche und API.
