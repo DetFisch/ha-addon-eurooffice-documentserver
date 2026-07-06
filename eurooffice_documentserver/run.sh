@@ -103,7 +103,17 @@ PORTNUMBER="$(config_string portnumber 8080)"
 validate_port "$PORTNUMBER"
 configure_http_port "$PORTNUMBER"
 
-export JWT_ENABLED="$(config_bool jwt_enabled true)"
+JWT_ENABLED_VALUE="$(config_bool jwt_enabled true)"
+JWT_SECRET_VALUE="$(config_string jwt_secret)"
+
+if [ "$JWT_ENABLED_VALUE" = "true" ] && [ -z "$JWT_SECRET_VALUE" ]; then
+  log "ERROR: jwt_enabled is true, but jwt_secret is empty."
+  log "Set the same jwt_secret in this add-on and in Nextcloud Euro-Office settings."
+  log "Generate one with: openssl rand -hex 32"
+  exit 1
+fi
+
+export JWT_ENABLED="$JWT_ENABLED_VALUE"
 export JWT_HEADER="$(config_string jwt_header Authorization)"
 export EXAMPLE_ENABLED="$(config_bool example_enabled false)"
 export WOPI_ENABLED="$(config_bool wopi_enabled false)"
@@ -111,7 +121,6 @@ export ALLOW_PRIVATE_IP_ADDRESS="$(config_bool allow_private_ip_address false)"
 export GENERATE_FONTS="$(config_bool generate_fonts true)"
 export NGINX_WORKER_PROCESSES="$(config_string nginx_worker_processes 1)"
 
-JWT_SECRET_VALUE="$(config_string jwt_secret)"
 if [ -n "$JWT_SECRET_VALUE" ]; then
   export JWT_SECRET="$JWT_SECRET_VALUE"
   if [ "${#JWT_SECRET_VALUE}" -lt 32 ]; then

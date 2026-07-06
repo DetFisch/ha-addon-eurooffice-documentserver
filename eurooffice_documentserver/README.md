@@ -23,9 +23,8 @@ http://homeassistant.local:<portnumber>/example/
 
 - `jwt_enabled`: enable JWT validation. Keep this enabled for integrations.
 - `portnumber`: host port used by Euro-Office Document Server.
-- `jwt_secret`: optional shared JWT secret. If empty, Euro-Office generates one
-  and stores it in persistent add-on data. For Nextcloud, use at least 32
-  characters.
+- `jwt_secret`: shared JWT secret. Required when `jwt_enabled` is true. Use the
+  same value in Nextcloud. Use at least 32 characters.
 - `jwt_header`: HTTP header used for JWT, usually `Authorization`.
 - `example_enabled`: enables the built-in example app. Do not enable it for
   untrusted networks.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Fail fast with a clear error when JWT is enabled but `jwt_secret` is empty.
+- Document the Nextcloud `Invalid token` troubleshooting path.
+
 ## 0.2.0
 
 - Add `portnumber` to the add-on configuration.

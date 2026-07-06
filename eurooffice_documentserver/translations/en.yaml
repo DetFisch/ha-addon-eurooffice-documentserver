@@ -7,7 +7,7 @@ configuration:
     description: Enable JWT validation for Document Server integrations.
   jwt_secret:
     name: JWT secret
-    description: Shared secret for integrations. Leave empty to let Euro-Office generate and persist one.
+    description: Shared secret for integrations. Required when JWT is enabled. Use the same value in Nextcloud.
   jwt_header:
     name: JWT header
     description: HTTP header carrying the JWT token.
