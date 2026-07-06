@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 CONFIG_PATH=/data/options.json
 PERSIST_ROOT=/data/euro-office
+EO_CONF_DIR="${EO_CONF:-/etc/euro-office/documentserver}"
 
 log() {
   printf '[eurooffice-ha] %s\n' "$*"
@@ -33,6 +34,34 @@ config_bool() {
   else
     printf '%s' "$default"
   fi
+}
+
+validate_port() {
+  local value="$1"
+
+  if [[ ! "$value" =~ ^[0-9]+$ ]] || [ "$value" -lt 1 ] || [ "$value" -gt 65535 ]; then
+    log "ERROR: portnumber must be between 1 and 65535, got '$value'."
+    exit 1
+  fi
+}
+
+configure_http_port() {
+  local port="$1"
+  local nginx_ds_conf="${EO_CONF_DIR}/nginx/ds.conf"
+
+  if [ ! -f "$nginx_ds_conf" ]; then
+    log "ERROR: nginx config not found at $nginx_ds_conf."
+    exit 1
+  fi
+
+  sed -ri "s/listen 0\\.0\\.0\\.0:[0-9]+;/listen 0.0.0.0:${port};/" "$nginx_ds_conf"
+  sed -ri "s/listen \\[::\\]:[0-9]+ default_server;/listen [::]:${port} default_server;/" "$nginx_ds_conf"
+  sed -ri "s/listen \\[::\\]:[0-9]+;/listen [::]:${port};/" "$nginx_ds_conf"
+
+  # The upstream entrypoint writes this value later when the example app is enabled.
+  sed -i "s#http://localhost/example/#http://localhost:${port}/example/#g" /entrypoint.sh
+
+  rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf 2>/dev/null || true
 }
 
 persist_path() {
@@ -70,6 +99,10 @@ persist_path /var/lib/postgresql "$PERSIST_ROOT/postgresql"
 persist_path /var/lib/redis "$PERSIST_ROOT/redis"
 persist_path /var/lib/rabbitmq "$PERSIST_ROOT/rabbitmq"
 
+PORTNUMBER="$(config_string portnumber 8080)"
+validate_port "$PORTNUMBER"
+configure_http_port "$PORTNUMBER"
+
 export JWT_ENABLED="$(config_bool jwt_enabled true)"
 export JWT_HEADER="$(config_string jwt_header Authorization)"
 export EXAMPLE_ENABLED="$(config_bool example_enabled false)"
@@ -86,7 +119,7 @@ if [ -n "$JWT_SECRET_VALUE" ]; then
   fi
 fi
 
-log "Starting Euro-Office Document Server on internal port 80."
+log "Starting Euro-Office Document Server on port $PORTNUMBER."
 log "Persistent data root: $PERSIST_ROOT"
 
 exec /entrypoint.sh

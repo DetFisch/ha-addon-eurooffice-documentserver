@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+- Add `portnumber` to the add-on configuration.
+- Run on the host network so `portnumber` is the actual host port.
+- Rewrite Euro-Office nginx listen settings during startup.
+
 ## 0.1.0
 
 - Initial Home Assistant app/add-on wrapper for the official Euro-Office

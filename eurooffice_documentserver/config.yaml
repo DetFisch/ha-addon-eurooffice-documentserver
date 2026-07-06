@@ -1,5 +1,5 @@
 name: "Euro-Office Document Server"
-version: "0.1.0"
+version: "0.2.0"
 slug: "eurooffice_documentserver"
 description: "Euro-Office Document Server packaged as a Home Assistant app"
 url: "https://github.com/DetFisch/ha-addon-eurooffice-documentserver"
@@ -9,13 +9,9 @@ arch:
 startup: services
 boot: auto
 init: false
-ports:
-  80/tcp: 8080
-ports_description:
-  80/tcp: "Euro-Office Document Server web interface and API"
-webui: "http://[HOST]:[PORT:80]/"
-watchdog: "http://[HOST]:[PORT:80]/healthcheck"
+host_network: true
 options:
+  portnumber: 8080
   jwt_enabled: true
   jwt_secret: ""
   jwt_header: "Authorization"
@@ -25,6 +21,7 @@ options:
   generate_fonts: true
   nginx_worker_processes: 1
 schema:
+  portnumber: port
   jwt_enabled: bool
   jwt_secret: password?
   jwt_header: "str"

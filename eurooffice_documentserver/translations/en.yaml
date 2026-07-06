@@ -1,4 +1,7 @@
 configuration:
+  portnumber:
+    name: Port number
+    description: Host port used by Euro-Office Document Server.
   jwt_enabled:
     name: JWT enabled
     description: Enable JWT validation for Document Server integrations.
@@ -23,5 +26,3 @@ configuration:
   nginx_worker_processes:
     name: Nginx worker processes
     description: Number of nginx worker processes inside the container.
-network:
-  80/TCP: Euro-Office Document Server web interface and API.

@@ -3,27 +3,26 @@
 Runs the official Euro-Office Document Server image as a Home Assistant
 app/add-on.
 
-## Network
+## Port
 
-The Document Server listens inside the container on port `80`. Home Assistant
-maps this to host port `8080` by default.
+Set `portnumber` in the add-on configuration. The default is `8080`.
 
-Change the port in the add-on **Network** section if you need another external
-port. The web UI URL is:
+The web UI URL is:
 
 ```text
-http://homeassistant.local:8080/
+http://homeassistant.local:<portnumber>/
 ```
 
 If the example app is enabled, it is available at:
 
 ```text
-http://homeassistant.local:8080/example/
+http://homeassistant.local:<portnumber>/example/
 ```
 
 ## Configuration
 
 - `jwt_enabled`: enable JWT validation. Keep this enabled for integrations.
+- `portnumber`: host port used by Euro-Office Document Server.
 - `jwt_secret`: optional shared JWT secret. If empty, Euro-Office generates one
   and stores it in persistent add-on data. For Nextcloud, use at least 32
   characters.

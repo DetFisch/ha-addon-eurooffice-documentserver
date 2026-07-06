@@ -22,6 +22,4 @@ Home Assistant local add-ons folder and refresh the add-on store.
 
 ## Port
 
-The server listens on container port `80`. Home Assistant exposes that through
-the add-on **Network** setting. The default host port is `8080`; change the host
-port there if another number is needed.
+Set `portnumber` in the add-on configuration. The default is `8080`.
