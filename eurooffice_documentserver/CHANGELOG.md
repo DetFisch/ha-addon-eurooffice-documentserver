@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2 - 2026-10-20
+
+- Build and publish versioned container images in GitHub Actions for faster Home Assistant installations and updates.
+- Preserve release tags and build every architecture declared by the add-on.
+
 ## 0.2.1
 
 - Fail fast with a clear error when JWT is enabled but `jwt_secret` is empty.

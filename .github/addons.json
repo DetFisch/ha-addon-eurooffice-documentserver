@@ -1,0 +1,6 @@
+[
+  {
+    "path": "eurooffice_documentserver",
+    "image": "ghcr.io/detfisch/eurooffice-documentserver"
+  }
+]
