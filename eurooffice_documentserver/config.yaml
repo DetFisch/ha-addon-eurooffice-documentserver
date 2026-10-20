@@ -1,5 +1,6 @@
 name: "Euro-Office Document Server"
 version: "0.2.2"
+image: "ghcr.io/detfisch/eurooffice-documentserver"
 slug: "eurooffice_documentserver"
 description: "Euro-Office Document Server packaged as a Home Assistant app"
 url: "https://github.com/DetFisch/ha-addon-eurooffice-documentserver"
