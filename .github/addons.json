@@ -1,6 +1,13 @@
 [
   {
     "path": "eurooffice_documentserver",
-    "image": "ghcr.io/detfisch/eurooffice-documentserver"
+    "image": "ghcr.io/detfisch/eurooffice-documentserver",
+    "smoke": {
+      "entrypoint": "bash",
+      "args": [
+        "-ec",
+        "bash -n /ha-run.sh; test -x /ha-run.sh; command -v nginx; command -v jq"
+      ]
+    }
   }
 ]
