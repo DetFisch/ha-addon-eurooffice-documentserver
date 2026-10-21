@@ -35,3 +35,20 @@ That error means the JWT token could not be validated. Check that:
 
 This add-on runs with `host_network: true` so the configured `portnumber` is the
 actual host port. Make sure no other service already uses that port.
+
+## PostgreSQL ownership mismatch after an image update
+
+If startup fails with `Config owner (postgres:102) and data owner
+(rabbitmq:103) do not match`, an older image wrote the persisted database with
+a different numeric user ID. The reported `rabbitmq` name is the new image's
+name for that old ID.
+
+Version 0.2.4 repairs the real directories under `/data/euro-office` using the
+service accounts in the current image before starting the server. This also
+covers RabbitMQ, Redis, document data, and logs. The add-on uses symlinks for
+persistence; repairing only `/var/lib/postgresql` as a symlink does not change
+the database files behind it.
+
+After installing the updated add-on, check that PostgreSQL starts, then check
+`http://<HA-LAN-IP>:<portnumber>/healthcheck` and open a document in Nextcloud.
+The repair changes ownership, preserving database and document contents.

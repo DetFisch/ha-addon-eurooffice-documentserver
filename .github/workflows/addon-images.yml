@@ -27,6 +27,8 @@ jobs:
       - run: python -m pip install PyYAML==6.0.3
       - run: python .github/scripts/test_addon_images.py
       - run: python .github/scripts/test_check_image.py
+      - name: Check persisted ownership migrations in temporary directories
+        run: sudo env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
       - name: Read versions, architectures and build settings
         id: addons
         run: |

@@ -9,6 +9,8 @@ log() {
   printf '[eurooffice-ha] %s\n' "$*"
 }
 
+source "$(dirname "${BASH_SOURCE[0]}")/persist.sh"
+
 config_has() {
   local key="$1"
   [ -f "$CONFIG_PATH" ] && jq -e --arg key "$key" 'has($key) and .[$key] != null' "$CONFIG_PATH" >/dev/null
@@ -64,40 +66,14 @@ configure_http_port() {
   rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf 2>/dev/null || true
 }
 
-persist_path() {
-  local source="$1"
-  local target="$2"
-
-  mkdir -p "$(dirname "$source")" "$(dirname "$target")"
-
-  if [ ! -e "$target" ]; then
-    mkdir -p "$target"
-    if [ -d "$source" ] && [ ! -L "$source" ]; then
-      cp -a "${source}/." "$target/" 2>/dev/null || true
-      chown --reference="$source" "$target" 2>/dev/null || true
-      chmod --reference="$source" "$target" 2>/dev/null || true
-    fi
-  fi
-
-  if [ -L "$source" ]; then
-    return
-  fi
-
-  if [ -e "$source" ]; then
-    rm -rf "$source"
-  fi
-
-  ln -s "$target" "$source"
-}
-
 mkdir -p "$PERSIST_ROOT"
 
-persist_path /var/www/euro-office/Data "$PERSIST_ROOT/Data"
-persist_path /var/lib/euro-office/documentserver "$PERSIST_ROOT/lib-documentserver"
-persist_path /var/log/euro-office/documentserver "$PERSIST_ROOT/logs"
-persist_path /var/lib/postgresql "$PERSIST_ROOT/postgresql"
-persist_path /var/lib/redis "$PERSIST_ROOT/redis"
-persist_path /var/lib/rabbitmq "$PERSIST_ROOT/rabbitmq"
+persist_path /var/www/euro-office/Data "$PERSIST_ROOT/Data" ds true
+persist_path /var/lib/euro-office/documentserver "$PERSIST_ROOT/lib-documentserver" ds
+persist_path /var/log/euro-office/documentserver "$PERSIST_ROOT/logs" ds
+persist_path /var/lib/postgresql "$PERSIST_ROOT/postgresql" postgres
+persist_path /var/lib/redis "$PERSIST_ROOT/redis" redis
+persist_path /var/lib/rabbitmq "$PERSIST_ROOT/rabbitmq" rabbitmq
 
 PORTNUMBER="$(config_string portnumber 8080)"
 validate_port "$PORTNUMBER"

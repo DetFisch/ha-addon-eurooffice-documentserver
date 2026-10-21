@@ -6,7 +6,7 @@
       "entrypoint": "bash",
       "args": [
         "-ec",
-        "bash -n /ha-run.sh; test -x /ha-run.sh; command -v nginx; command -v jq"
+        "bash -n /ha-run.sh; bash -n /persist.sh; test -x /ha-run.sh; command -v nginx; command -v jq; command -v find; command -v chown; command -v readlink; command -v stat"
       ]
     }
   }

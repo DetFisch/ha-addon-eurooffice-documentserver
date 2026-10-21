@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.4 - 2026-10-21
+
+- Repair ownership of the actual persisted directories before starting services,
+  including data created with older PostgreSQL and RabbitMQ user IDs.
+- Keep stored secrets root-owned and avoid following symlinks inside the data.
+- Fail startup on ownership repair errors or unexpected persistence mappings.
+
 ## 0.2.3 - 2026-10-20
 
 - Align image metadata and configuration with current Home Assistant app requirements.

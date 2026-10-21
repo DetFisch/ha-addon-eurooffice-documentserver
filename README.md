@@ -33,3 +33,14 @@ to the default branch and publishes after all declared architectures pass.
 Existing release tags are kept; increase the add-on version for a new release.
 
 See [.github/ADDON_IMAGES.md](.github/ADDON_IMAGES.md) for the build and release workflow.
+
+## Local regression checks
+
+The persistence tests require Linux root to check numeric UID/GID migrations.
+They use temporary directories only and do not start any services or containers:
+
+```sh
+bash -n eurooffice_documentserver/run.sh
+bash -n eurooffice_documentserver/persist.sh
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
+```
