@@ -4,6 +4,7 @@ ARG BUILD_ARCH
 FROM ghcr.io/euro-office/documentserver:latest
 
 ARG BUILD_VERSION=0.2.4
+LABEL org.opencontainers.image.version="${BUILD_VERSION}"
 ARG BUILD_ARCH
 
 LABEL \
